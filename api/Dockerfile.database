@@ -1,0 +1,11 @@
+FROM postgres:17-alpine
+
+# Les images postgres prévoient qu'on puisse définir un script d'initialisation
+# en le plaçant dans le dossier /docker-entrypoint-initdb.d/ de l'image
+
+# Le répertoire /docker-entrypoint-initdb.d/ permet de définir un ensemble de script à lancer lors de l'initialisation 
+# du container basé sur une image postgres
+# cf la doc : https://hub.docker.com/_/postgres/#initialization-scripts
+COPY ./data/* /docker-entrypoint-initdb.d/
+
+EXPOSE 5432

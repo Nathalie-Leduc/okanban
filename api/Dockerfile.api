@@ -1,0 +1,22 @@
+
+# les images alpine sont basée sur une distribution linux légère
+FROM node:24-alpine
+
+# on définit un répertoire de travail
+WORKDIR /usr/src/app
+
+# on copie package-lock.json et package.json
+COPY package*.json .
+
+# on installe les dépendances (mais pas celle de dev)
+RUN npm i --omit=dev
+
+# optimisation - il y a des chance que nos sources évoule plus fréquemment que nos dépendance,
+# le système de construction par couche de docker permet ainsi d'optiomiser l'espace et la puissance de calcul nécessaire en cas de recréation d'image
+COPY . .
+
+# on documente le port utilisé à l'intérieur de l'image
+EXPOSE 3000
+
+# équivalent à : CMD npm run start
+CMD ["npm", "run", "start"]
